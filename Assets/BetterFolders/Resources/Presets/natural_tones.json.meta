@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 76902034c7116aa4e9eef64f0afa4dca
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 311261
+  packageName: Better Folders
+  packageVersion: 1.0
+  assetPath: Assets/BetterFolders/Resources/Presets/natural_tones.json
+  uploadId: 733772

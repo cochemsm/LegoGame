@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3f6524f97141eef4cb838ea589d9ef49
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 311261
+  packageName: Better Folders
+  packageVersion: 1.0
+  assetPath: Assets/BetterFolders/Resources/Presets/DefaultFolderRules.json
+  uploadId: 733772

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b9d9de0cf1260f74baf52369cf41d58b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 311261
+  packageName: Better Folders
+  packageVersion: 1.0
+  assetPath: Assets/BetterFolders/Editor/FolderColorEditWindow.cs
+  uploadId: 733772

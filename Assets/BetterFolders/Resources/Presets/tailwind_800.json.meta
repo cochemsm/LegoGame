@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e6049f55824952b42b81c376d6b98dd1
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 311261
+  packageName: Better Folders
+  packageVersion: 1.0
+  assetPath: Assets/BetterFolders/Resources/Presets/tailwind_800.json
+  uploadId: 733772
