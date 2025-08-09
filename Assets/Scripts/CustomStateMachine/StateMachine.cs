@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 
-namespace StateMachine {
+namespace CustomStateMachine {
     public class StateMachine {
         public State CurrentState { get; private set; }
 

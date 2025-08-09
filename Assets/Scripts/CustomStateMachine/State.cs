@@ -1,4 +1,4 @@
-namespace StateMachine {
+namespace CustomStateMachine {
     public abstract class State {
         public virtual void Enter() {
             
