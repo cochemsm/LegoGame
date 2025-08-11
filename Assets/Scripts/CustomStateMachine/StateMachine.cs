@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine;
 
 namespace CustomStateMachine {
     public class StateMachine {
@@ -10,33 +11,26 @@ namespace CustomStateMachine {
         private readonly List<Transition> _anyTransitions = new List<Transition>();
         
         public void SetState(State state) {
-            if (!_availableState.Keys.ToListPooled().Contains(state)) return;
-            
             CurrentState?.Exit();
             CurrentState = state;
             CurrentState.Enter();
         }
 
         public void AddState(State state) {
-            if (!_availableState.Keys.ToListPooled().Contains(state)) return;
-            
             _availableState.Add(state, new List<Transition>());
         }
 
         public void TransitionFromStateToState(State fromState, State toState, Func<bool> condition) {
-            if (!_availableState.Keys.ToListPooled().Contains(fromState)) return;
-            if (!_availableState.Keys.ToListPooled().Contains(toState)) return;
-            
             _availableState[fromState].Add(new Transition{ ToState = toState, Condition = condition });
         }
 
         public void TransitionFromAnyToState(State toState, Func<bool> condition) {
-            if (!_availableState.Keys.ToListPooled().Contains(toState)) return;
-            
             _anyTransitions.Add(new Transition{ ToState = toState, Condition = condition });
         }
         
         public void Update() {
+            if (CurrentState == null) return;
+            
             CurrentState.Update();
 
             foreach (var transition in _availableState[CurrentState]) {

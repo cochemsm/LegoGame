@@ -10,11 +10,19 @@ namespace ThirdPersonPlayerController {
         private StateMachine _stateMachine = new StateMachine();
         private Rigidbody _rigidbody;
         private InputAction _moveInput;
+        private CapsuleCollider _capsuleCollider;
+        private SphereCaster _groundCheck;
 
         [SerializeField] private float movementSpeed;
 
         private void Awake() {
             _rigidbody = GetComponent<Rigidbody>();
+            _rigidbody.freezeRotation = true;
+            _rigidbody.useGravity = false;
+
+            _capsuleCollider = GetComponent<CapsuleCollider>();
+
+            _groundCheck = new SphereCaster(transform.position, Vector3.down, _capsuleCollider.radius - 0.01f, _capsuleCollider.height / 2 - _capsuleCollider.radius + 0.02f, ~LayerMask.GetMask("Ignore Raycast", "Player"));
         }
 
         private void Start() {
@@ -29,7 +37,7 @@ namespace ThirdPersonPlayerController {
             Idle idle = new Idle();
             _stateMachine.AddState(idle);
 
-            Walking walking = new Walking(_rigidbody, _moveInput, movementSpeed);
+            Walking walking = new Walking(_rigidbody, _moveInput, movementSpeed, _groundCheck);
             _stateMachine.AddState(walking);
 
             Jumping jumping = new Jumping();
@@ -64,6 +72,18 @@ namespace ThirdPersonPlayerController {
             // Any -> Death (HP == 0)
             
             _stateMachine.SetState(idle);
+        }
+
+        private void Update() {
+            _groundCheck.SetOrigin(transform.position);
+            _groundCheck.Cast();
+            _stateMachine.Update();
+            
+            print("Grounded: " + _groundCheck.HasHitSomething());
+        }
+
+        private void OnDrawGizmos() {
+            _groundCheck?.GizmosDebug();
         }
     }
 }
