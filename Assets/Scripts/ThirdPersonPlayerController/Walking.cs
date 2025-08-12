@@ -20,7 +20,7 @@ namespace ThirdPersonPlayerController {
             Vector2 input = _moveAction.ReadValue<Vector2>() * (_movementSpeed * Time.deltaTime);
             
             // Cam Oriented Movement
-            Camera cam = Camera.main; // wrong
+            var cam = RoomManager.currentCamera;
             Vector3 forward = cam.transform.forward;
             Vector3 right = cam.transform.right;
             forward.y = 0;
