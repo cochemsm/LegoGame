@@ -11,9 +11,13 @@ namespace CustomStateMachine {
         private readonly List<Transition> _anyTransitions = new List<Transition>();
         
         public void SetState(State state) {
+            if (state == CurrentState) return;
+            
             CurrentState?.Exit();
             CurrentState = state;
             CurrentState.Enter();
+            
+            Debug.Log(CurrentState.GetType());
         }
 
         public void AddState(State state) {

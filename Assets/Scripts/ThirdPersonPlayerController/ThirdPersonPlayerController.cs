@@ -1,8 +1,6 @@
-using System;
 using CustomStateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 namespace ThirdPersonPlayerController {
     [RequireComponent(typeof(Rigidbody))]
@@ -13,7 +11,8 @@ namespace ThirdPersonPlayerController {
         private CapsuleCollider _capsuleCollider;
         private SphereCaster _groundCheck;
 
-        [SerializeField] private float movementSpeed;
+        [SerializeField] private float movementSpeed = 1;
+        [SerializeField] private float fallingSpeed = 1;
 
         private void Awake() {
             _rigidbody = GetComponent<Rigidbody>();
@@ -22,7 +21,7 @@ namespace ThirdPersonPlayerController {
 
             _capsuleCollider = GetComponent<CapsuleCollider>();
 
-            _groundCheck = new SphereCaster(transform.position, Vector3.down, _capsuleCollider.radius - 0.01f, _capsuleCollider.height / 2 - _capsuleCollider.radius + 0.02f, ~LayerMask.GetMask("Ignore Raycast", "Player"));
+            _groundCheck = new SphereCaster(transform.position, Vector3.down, _capsuleCollider.radius - 0.01f, _capsuleCollider.height / 2 - _capsuleCollider.radius + 0.02f, ~LayerMask.GetMask("Ignore Raycast", "Player", "RoomTrigger"));
         }
 
         private void Start() {
@@ -43,7 +42,7 @@ namespace ThirdPersonPlayerController {
             Jumping jumping = new Jumping();
             _stateMachine.AddState(jumping);
 
-            Falling falling = new Falling();
+            Falling falling = new Falling(_rigidbody, fallingSpeed);
             _stateMachine.AddState(falling);
 
             Attacking attacking = new Attacking();
@@ -69,6 +68,8 @@ namespace ThirdPersonPlayerController {
             // Attacking -> Idle (Automatic)
             // Death -> Idle (Automatic)
             
+            _stateMachine.TransitionFromAnyToState(falling, () => !_groundCheck.HasHitSomething());
+            _stateMachine.TransitionFromStateToState(falling, idle, () => _groundCheck.HasHitSomething());
             // Any -> Death (HP == 0)
             
             _stateMachine.SetState(idle);
@@ -78,8 +79,6 @@ namespace ThirdPersonPlayerController {
             _groundCheck.SetOrigin(transform.position);
             _groundCheck.Cast();
             _stateMachine.Update();
-            
-            print("Grounded: " + _groundCheck.HasHitSomething());
         }
 
         private void OnDrawGizmos() {
