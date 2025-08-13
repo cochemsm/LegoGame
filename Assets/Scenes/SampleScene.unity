@@ -925,6 +925,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 4000
   fallingSpeed: 10
+  jumpForce: 250
 --- !u!54 &1730617050
 Rigidbody:
   m_ObjectHideFlags: 0

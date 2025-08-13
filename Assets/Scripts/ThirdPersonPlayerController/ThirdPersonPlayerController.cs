@@ -10,9 +10,13 @@ namespace ThirdPersonPlayerController {
         private InputAction _moveInput;
         private CapsuleCollider _capsuleCollider;
         private SphereCaster _groundCheck;
+        private InputAction _jumpInput;
 
         [SerializeField] private float movementSpeed = 1;
         [SerializeField] private float fallingSpeed = 1;
+        [SerializeField] private float jumpForce = 1;
+        [SerializeField] private string CurrentState;
+        [SerializeField] private bool Grounded;
 
         private void Awake() {
             _rigidbody = GetComponent<Rigidbody>();
@@ -26,6 +30,7 @@ namespace ThirdPersonPlayerController {
 
         private void Start() {
             _moveInput = InputSystem.actions.FindAction("Move");
+            _jumpInput = InputSystem.actions.FindAction("Jump");
             
             InputSystem.actions.Enable();
             
@@ -39,10 +44,10 @@ namespace ThirdPersonPlayerController {
             Walking walking = new Walking(_rigidbody, _moveInput, movementSpeed, _groundCheck);
             _stateMachine.AddState(walking);
 
-            Jumping jumping = new Jumping();
+            Jumping jumping = new Jumping(_rigidbody, jumpForce);
             _stateMachine.AddState(jumping);
 
-            Falling falling = new Falling(_rigidbody, fallingSpeed);
+            Falling falling = new Falling(_rigidbody, fallingSpeed, _moveInput, movementSpeed);
             _stateMachine.AddState(falling);
 
             Attacking attacking = new Attacking();
@@ -54,13 +59,13 @@ namespace ThirdPersonPlayerController {
             // Idle -> Walking (MoveInput != Vector2.Zero)
             _stateMachine.TransitionFromStateToState(idle, walking, () => _moveInput.ReadValue<Vector2>() != Vector2.zero);
             // Idle -> Jumping (JumpInput == true)
-            // Idle -> Falling (IsGrounded == false)
+            _stateMachine.TransitionFromStateToState(idle, jumping, () => _jumpInput.IsPressed());
             // Idle -> Attacking (AttackInput == true)
             
             // walking -> Idle (MoveInput == Vector2.Zero)
             _stateMachine.TransitionFromStateToState(walking, idle, () => _moveInput.ReadValue<Vector2>() == Vector2.zero);
             // walking -> Jumping (JumpInput == true)
-            // walking -> Falling (IsGrounded == false)
+            _stateMachine.TransitionFromStateToState(walking, jumping, () => _jumpInput.IsPressed());
             // walking -> attacking (AttackInput == true)
             
             // Jumping -> Falling (Automatic)
@@ -79,6 +84,9 @@ namespace ThirdPersonPlayerController {
             _groundCheck.SetOrigin(transform.position);
             _groundCheck.Cast();
             _stateMachine.Update();
+
+            CurrentState = _stateMachine.CurrentState.ToString();
+            Grounded = _groundCheck.HasHitSomething();
         }
 
         private void OnDrawGizmos() {

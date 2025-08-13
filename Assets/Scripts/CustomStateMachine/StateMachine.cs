@@ -16,8 +16,6 @@ namespace CustomStateMachine {
             CurrentState?.Exit();
             CurrentState = state;
             CurrentState.Enter();
-            
-            Debug.Log(CurrentState.GetType());
         }
 
         public void AddState(State state) {
