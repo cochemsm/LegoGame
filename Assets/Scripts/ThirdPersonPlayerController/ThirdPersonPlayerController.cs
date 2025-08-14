@@ -1,3 +1,4 @@
+using System;
 using CustomStateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,12 +12,14 @@ namespace ThirdPersonPlayerController {
         private CapsuleCollider _capsuleCollider;
         private SphereCaster _groundCheck;
         private InputAction _jumpInput;
+        private Animator _animator;
 
         [SerializeField] private float movementSpeed = 1;
         [SerializeField] private float fallingSpeed = 1;
         [SerializeField] private float jumpForce = 1;
         [SerializeField] private string CurrentState;
         [SerializeField] private bool Grounded;
+        public Vector3 Velocity;
 
         private void Awake() {
             _rigidbody = GetComponent<Rigidbody>();
@@ -24,6 +27,8 @@ namespace ThirdPersonPlayerController {
             _rigidbody.useGravity = false;
 
             _capsuleCollider = GetComponent<CapsuleCollider>();
+
+            _animator = GetComponentInChildren<Animator>();
 
             _groundCheck = new SphereCaster(transform.position, Vector3.down, _capsuleCollider.radius - 0.01f, _capsuleCollider.height / 2 - _capsuleCollider.radius + 0.02f, ~LayerMask.GetMask("Ignore Raycast", "Player", "RoomTrigger"));
         }
@@ -38,17 +43,17 @@ namespace ThirdPersonPlayerController {
         }
 
         private void SetupStateMachine() {
-            Idle idle = new Idle();
+            Idle idle = new Idle(_animator);
             _stateMachine.AddState(idle);
 
-            Walking walking = new Walking(_rigidbody, _moveInput, movementSpeed, _groundCheck);
+            Walking walking = new Walking(this, _rigidbody, _moveInput, movementSpeed, _groundCheck, _animator);
             _stateMachine.AddState(walking);
-
-            Jumping jumping = new Jumping(_rigidbody, jumpForce);
-            _stateMachine.AddState(jumping);
-
-            Falling falling = new Falling(_rigidbody, fallingSpeed, _moveInput, movementSpeed);
+            
+            Falling falling = new Falling(this, _rigidbody, fallingSpeed, _moveInput, movementSpeed, _animator);
             _stateMachine.AddState(falling);
+            
+            Jumping jumping = new Jumping(this, transform, jumpForce, _animator);
+            _stateMachine.AddState(jumping);
 
             Attacking attacking = new Attacking();
             _stateMachine.AddState(attacking);
@@ -73,6 +78,8 @@ namespace ThirdPersonPlayerController {
             // Attacking -> Idle (Automatic)
             // Death -> Idle (Automatic)
             
+            _stateMachine.TransitionFromStateToState(jumping, idle, () => jumping.JumpFinished);
+            
             _stateMachine.TransitionFromAnyToState(falling, () => !_groundCheck.HasHitSomething());
             _stateMachine.TransitionFromStateToState(falling, idle, () => _groundCheck.HasHitSomething());
             // Any -> Death (HP == 0)
@@ -83,10 +90,16 @@ namespace ThirdPersonPlayerController {
         private void Update() {
             _groundCheck.SetOrigin(transform.position);
             _groundCheck.Cast();
-            _stateMachine.Update();
-
+            
+            
             CurrentState = _stateMachine.CurrentState.ToString();
             Grounded = _groundCheck.HasHitSomething();
+        }
+
+        private void FixedUpdate() {
+            _stateMachine.Update();
+            
+            _rigidbody.linearVelocity = Velocity * Time.deltaTime;
         }
 
         private void OnDrawGizmos() {

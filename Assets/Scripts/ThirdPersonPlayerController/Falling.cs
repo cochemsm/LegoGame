@@ -4,20 +4,28 @@ using UnityEngine.InputSystem;
 
 namespace ThirdPersonPlayerController {
     public class Falling : State {
+        private ThirdPersonPlayerController _player;
         private Rigidbody _rigidbody;
         private float _fallingSpeed;
         private InputAction _moveAction;
         private float _movementSpeed;
+        private Animator _animator;
 
-        public Falling(Rigidbody rigidbody, float fallingSpeed, InputAction moveAction, float movementSpeed) {
+        public Falling(ThirdPersonPlayerController player, Rigidbody rigidbody, float fallingSpeed, InputAction moveAction, float movementSpeed,  Animator animator) {
+            _player = player;
             _rigidbody = rigidbody;
             _fallingSpeed = fallingSpeed;
             _moveAction = moveAction;
             _movementSpeed = movementSpeed;
+            _animator = animator;
         }
-        
+
+        public override void Enter() {
+            _animator.Play("InAir");
+        }
+
         public override void Update() {
-            Vector2 input = _moveAction.ReadValue<Vector2>() * (_movementSpeed * Time.deltaTime);
+            Vector2 input = _moveAction.ReadValue<Vector2>() * _movementSpeed;
             
             // Cam Oriented Movement
             var cam = RoomManager.currentCamera;
@@ -29,10 +37,10 @@ namespace ThirdPersonPlayerController {
             right.Normalize();
             
             Vector3 inputDirection = input.x * right + input.y * forward;
-            inputDirection += new Vector3(0, _rigidbody.linearVelocity.y, 0);
-            inputDirection += Vector3.down * (Time.deltaTime * _fallingSpeed);
+            inputDirection += new Vector3(0, _player.Velocity.y, 0);
+            inputDirection += Vector3.down *  _fallingSpeed;
             
-            _rigidbody.linearVelocity = inputDirection;
+            _player.Velocity = inputDirection;
             
             // Look into Walking Direction
             if (input == Vector2.zero) return;
@@ -40,6 +48,9 @@ namespace ThirdPersonPlayerController {
             _rigidbody.MoveRotation(Quaternion.Slerp(_rigidbody.rotation, targetRotation, 10f * Time.fixedDeltaTime));
         }
 
-        public override void Exit() => _rigidbody.linearVelocity = Vector3.zero;
+        public override void Exit() {
+            _player.Velocity = Vector3.zero;
+            _animator.Play("JumpEnd");
+        }
     }
 }
