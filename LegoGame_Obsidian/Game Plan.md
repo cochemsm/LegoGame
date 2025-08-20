@@ -15,3 +15,10 @@ kleines Testlevel mit rumlaufen
 #### Prio #3
 - erstes eintieg puzzle
 
+
+Dinge für heute:
+- jump fixen -> es funktioniert
+- treppen gehen können -> brauche ich das überhaupt
+- charakter wechseln
+- 3 charaktere bauen
+- sounds für spieler einfügen

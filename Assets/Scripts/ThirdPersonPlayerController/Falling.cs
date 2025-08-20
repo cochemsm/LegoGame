@@ -1,23 +1,26 @@
 using CustomStateMachine;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace ThirdPersonPlayerController {
     public class Falling : State {
-        private ThirdPersonPlayerController _player;
+        private Player _player;
         private Rigidbody _rigidbody;
         private float _fallingSpeed;
         private InputAction _moveAction;
         private float _movementSpeed;
         private Animator _animator;
+        private CinemachineCamera _camera;
 
-        public Falling(ThirdPersonPlayerController player, Rigidbody rigidbody, float fallingSpeed, InputAction moveAction, float movementSpeed,  Animator animator) {
+        public Falling(Player player, Rigidbody rigidbody, float fallingSpeed, InputAction moveAction, float movementSpeed,  Animator animator) {
             _player = player;
             _rigidbody = rigidbody;
             _fallingSpeed = fallingSpeed;
             _moveAction = moveAction;
             _movementSpeed = movementSpeed;
             _animator = animator;
+            RoomManager.OnCameraChange += camera => _camera = camera;
         }
 
         public override void Enter() {
@@ -28,9 +31,8 @@ namespace ThirdPersonPlayerController {
             Vector2 input = _moveAction.ReadValue<Vector2>() * _movementSpeed;
             
             // Cam Oriented Movement
-            var cam = RoomManager.currentCamera;
-            Vector3 forward = cam.transform.forward;
-            Vector3 right = cam.transform.right;
+            Vector3 forward = _camera.transform.forward;
+            Vector3 right = _camera.transform.right;
             forward.y = 0;
             right.y = 0;
             forward.Normalize();

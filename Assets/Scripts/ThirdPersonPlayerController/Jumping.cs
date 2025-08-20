@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ThirdPersonPlayerController {
     public class Jumping : State {
-        private ThirdPersonPlayerController _player;
+        private Player _player;
         private float _jumpForce;
         private Animator _animator;
         private Transform _transform;
@@ -11,7 +11,7 @@ namespace ThirdPersonPlayerController {
         public bool JumpFinished;
         private Vector3 _startingPosition;
 
-        public Jumping(ThirdPersonPlayerController player, Transform transform, float jumpForce, Animator animator) {
+        public Jumping(Player player, Transform transform, float jumpForce, Animator animator) {
             _player = player;
             _transform = transform;
             _jumpForce = jumpForce;

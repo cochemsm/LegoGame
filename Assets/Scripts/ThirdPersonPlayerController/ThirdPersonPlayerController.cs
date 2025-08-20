@@ -1,11 +1,10 @@
-using System;
 using CustomStateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace ThirdPersonPlayerController {
     [RequireComponent(typeof(Rigidbody))]
-    public class ThirdPersonPlayerController : MonoBehaviour {
+    public class Player : MonoBehaviour {
         private StateMachine _stateMachine = new StateMachine();
         private Rigidbody _rigidbody;
         private InputAction _moveInput;

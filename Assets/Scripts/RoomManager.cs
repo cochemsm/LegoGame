@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class RoomManager : MonoBehaviour {
@@ -7,10 +8,10 @@ public class RoomManager : MonoBehaviour {
 
     private Room currentRoom;
 
-    public static event Action<Camera> OnCameraChange;
+    public static event Action<CinemachineCamera> OnCameraChange;
     
     [Obsolete("Better use the OnCameraChange Event, so camera is not fetched every frame")]
-    public static Camera currentCamera => instance.currentRoom.Camera;
+    public static CinemachineCamera currentCamera => instance.currentRoom.Camera;
 
     private static RoomManager instance;
     
