@@ -13,26 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Lego Game.md",
+                "file": "Museum Level Ideen.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Lego Game"
-            }
-          },
-          {
-            "id": "56ed453998432e1a",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Game Plan.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Game Plan"
+              "title": "Museum Level Ideen"
             }
           },
           {
@@ -212,10 +198,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "56ed453998432e1a",
+  "active": "4cb398f7b9e5b356",
   "lastOpenFiles": [
-    "Lego Game.md",
     "Museum Level Ideen.md",
+    "Lego Game.md",
     "Game Plan.md",
     "Museum Reference.md"
   ]

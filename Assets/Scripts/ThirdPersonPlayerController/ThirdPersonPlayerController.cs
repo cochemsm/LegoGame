@@ -30,9 +30,7 @@ namespace ThirdPersonPlayerController {
             _animator = GetComponentInChildren<Animator>();
 
             _groundCheck = new SphereCaster(transform.position, Vector3.down, _capsuleCollider.radius - 0.01f, _capsuleCollider.height / 2 - _capsuleCollider.radius + 0.02f, ~LayerMask.GetMask("Ignore Raycast", "Player", "RoomTrigger"));
-        }
-
-        private void Start() {
+            
             _moveInput = InputSystem.actions.FindAction("Move");
             _jumpInput = InputSystem.actions.FindAction("Jump");
             
