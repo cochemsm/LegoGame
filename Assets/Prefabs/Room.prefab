@@ -186,7 +186,7 @@ MonoBehaviour:
     Position: 0
     Units: 0
   SplineOffset: {x: 0, y: 0, z: 0}
-  CameraRotation: 3
+  CameraRotation: 0
   Damping:
     Enabled: 0
     Position: {x: 0, y: 0, z: 0}

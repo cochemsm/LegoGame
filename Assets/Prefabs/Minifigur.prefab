@@ -103,6 +103,29 @@ MonoBehaviour:
   CurrentState: 
   Grounded: 0
   Velocity: {x: 0, y: 0, z: 0}
+  characters:
+  - Material:
+    - {fileID: 2100000, guid: 02c50643a9f5de742acc14cb0fc5a117, type: 2}
+    - {fileID: 2100000, guid: 02c50643a9f5de742acc14cb0fc5a117, type: 2}
+    - {fileID: 2100000, guid: 02c50643a9f5de742acc14cb0fc5a117, type: 2}
+    - {fileID: 2100000, guid: ed0253ad6b416da4bb1491e6d3d2db59, type: 2}
+    - {fileID: 2100000, guid: ed0253ad6b416da4bb1491e6d3d2db59, type: 2}
+    - {fileID: 2100000, guid: 6c0197aa693c7b148b4fe4d2ae9e71fa, type: 2}
+    - {fileID: 2100000, guid: ed0253ad6b416da4bb1491e6d3d2db59, type: 2}
+    - {fileID: 2100000, guid: 6c0197aa693c7b148b4fe4d2ae9e71fa, type: 2}
+    - {fileID: 2100000, guid: 6c0197aa693c7b148b4fe4d2ae9e71fa, type: 2}
+    HeadGear: {fileID: 0}
+  - Material:
+    - {fileID: 2100000, guid: d612ed36e004e1e4c9970e6a7e2749d0, type: 2}
+    - {fileID: 2100000, guid: d612ed36e004e1e4c9970e6a7e2749d0, type: 2}
+    - {fileID: 2100000, guid: d612ed36e004e1e4c9970e6a7e2749d0, type: 2}
+    - {fileID: 2100000, guid: d612ed36e004e1e4c9970e6a7e2749d0, type: 2}
+    - {fileID: 2100000, guid: d612ed36e004e1e4c9970e6a7e2749d0, type: 2}
+    - {fileID: 2100000, guid: 6c0197aa693c7b148b4fe4d2ae9e71fa, type: 2}
+    - {fileID: 2100000, guid: d612ed36e004e1e4c9970e6a7e2749d0, type: 2}
+    - {fileID: 2100000, guid: 6c0197aa693c7b148b4fe4d2ae9e71fa, type: 2}
+    - {fileID: 2100000, guid: 6c0197aa693c7b148b4fe4d2ae9e71fa, type: 2}
+    HeadGear: {fileID: 0}
 --- !u!1001 &434425856830618798
 PrefabInstance:
   m_ObjectHideFlags: 0

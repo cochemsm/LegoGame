@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using CustomStateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,6 +14,7 @@ namespace ThirdPersonPlayerController {
         private SphereCaster _groundCheck;
         private InputAction _jumpInput;
         private Animator _animator;
+        private InputAction _interactInput;
 
         [SerializeField] private float movementSpeed = 1;
         [SerializeField] private float fallingSpeed = 1;
@@ -20,6 +23,8 @@ namespace ThirdPersonPlayerController {
         [SerializeField] private bool Grounded;
         public Vector3 Velocity;
 
+        [SerializeField] private List<Character> characters = new();
+        
         private void Awake() {
             _rigidbody = GetComponent<Rigidbody>();
             _rigidbody.freezeRotation = true;
@@ -33,10 +38,13 @@ namespace ThirdPersonPlayerController {
             
             _moveInput = InputSystem.actions.FindAction("Move");
             _jumpInput = InputSystem.actions.FindAction("Jump");
+            _interactInput = InputSystem.actions.FindAction("Interact");
             
             InputSystem.actions.Enable();
             
             SetupStateMachine();
+            
+            ChangeCharacterByIndex(0);
         }
 
         private void SetupStateMachine() {
@@ -57,29 +65,24 @@ namespace ThirdPersonPlayerController {
 
             Death death = new Death();
             _stateMachine.AddState(death);
+
+            ChangeCharacter changeCharacter = new ChangeCharacter(this, characters.Count);
+            _stateMachine.AddState(changeCharacter);
             
-            // Idle -> Walking (MoveInput != Vector2.Zero)
             _stateMachine.TransitionFromStateToState(idle, walking, () => _moveInput.ReadValue<Vector2>() != Vector2.zero);
-            // Idle -> Jumping (JumpInput == true)
             _stateMachine.TransitionFromStateToState(idle, jumping, () => _jumpInput.IsPressed());
-            // Idle -> Attacking (AttackInput == true)
+            _stateMachine.TransitionFromStateToState(idle, changeCharacter, () => _interactInput.WasPressedThisFrame());
             
-            // walking -> Idle (MoveInput == Vector2.Zero)
             _stateMachine.TransitionFromStateToState(walking, idle, () => _moveInput.ReadValue<Vector2>() == Vector2.zero);
-            // walking -> Jumping (JumpInput == true)
             _stateMachine.TransitionFromStateToState(walking, jumping, () => _jumpInput.IsPressed());
-            // walking -> attacking (AttackInput == true)
-            
-            // Jumping -> Falling (Automatic)
-            // Falling -> Idle (IsGrounded == true)
-            // Attacking -> Idle (Automatic)
-            // Death -> Idle (Automatic)
+            _stateMachine.TransitionFromStateToState(walking, changeCharacter, () => _interactInput.WasPressedThisFrame());
             
             _stateMachine.TransitionFromStateToState(jumping, idle, () => jumping.JumpFinished);
             
             _stateMachine.TransitionFromAnyToState(falling, () => !_groundCheck.HasHitSomething());
             _stateMachine.TransitionFromStateToState(falling, idle, () => _groundCheck.HasHitSomething());
-            // Any -> Death (HP == 0)
+
+            _stateMachine.TransitionFromStateToState(changeCharacter, idle, () => true);
             
             _stateMachine.SetState(idle);
         }
@@ -90,16 +93,29 @@ namespace ThirdPersonPlayerController {
             
             CurrentState = _stateMachine.CurrentState.ToString();
             Grounded = _groundCheck.HasHitSomething();
+            
+            _stateMachine.Update();
         }
 
         private void FixedUpdate() {
-            _stateMachine.Update();
-            
             _rigidbody.linearVelocity = Velocity * Time.deltaTime;
         }
 
         private void OnDrawGizmos() {
             _groundCheck?.GizmosDebug();
         }
+
+        public void ChangeCharacterByIndex(int index) {
+            var parts = GetComponentsInChildren<SkinnedMeshRenderer>();
+            for (int i = 0; i < parts.Length; i++) {
+                parts[i].material = characters[index].Material[i];
+            }
+        }
     }
+}
+
+[Serializable]
+public struct Character {
+    public List<Material> Material;
+    public GameObject HeadGear;
 }

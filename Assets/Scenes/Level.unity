@@ -495,19 +495,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8980707334817404745, guid: 50a5dc43a894033459d0b03fdb90d923, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0034506079
+      value: -0.0034506083
       objectReference: {fileID: 0}
     - target: {fileID: 8980707334817404745, guid: 50a5dc43a894033459d0b03fdb90d923, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.00061881123
+      value: -0.00061881135
       objectReference: {fileID: 0}
     - target: {fileID: 8980707334817404745, guid: 50a5dc43a894033459d0b03fdb90d923, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.9842914
+      value: 0.9842914
       objectReference: {fileID: 0}
     - target: {fileID: 8980707334817404745, guid: 50a5dc43a894033459d0b03fdb90d923, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.17651688
+      value: -0.1765169
       objectReference: {fileID: 0}
     - target: {fileID: 8990815928520002349, guid: 50a5dc43a894033459d0b03fdb90d923, type: 3}
       propertyPath: m_Name
@@ -854,7 +854,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8098838628929880364, guid: 5b88387ed446b1440bdcf2f29bb078c5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.45800018
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8098838628929880364, guid: 5b88387ed446b1440bdcf2f29bb078c5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1282,7 +1282,7 @@ MonoBehaviour:
   IgnoreTimeScale: 0
   WorldUpOverride: {fileID: 0}
   ChannelMask: -1
-  UpdateMethod: 2
+  UpdateMethod: 1
   BlendUpdateMethod: 1
   LensModeOverride:
     Enabled: 0
