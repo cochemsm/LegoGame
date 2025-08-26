@@ -88,7 +88,6 @@ namespace ThirdPersonPlayerController {
             _groundCheck.SetOrigin(transform.position);
             _groundCheck.Cast();
             
-            
             CurrentState = _stateMachine.CurrentState.ToString();
             Grounded = _groundCheck.HasHitSomething();
         }
