@@ -1258,8 +1258,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1076753155}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.12278778, y: -0.6963643, z: 0.12278779, w: 0.6963642}
-  m_LocalPosition: {x: -63.381042, y: 7.4, z: 0.40249294}
+  m_LocalRotation: {x: 0.15461701, y: -0.68859845, z: 0.15396023, w: 0.691536}
+  m_LocalPosition: {x: -54.8199, y: 11.280153, z: 38.52905}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2238,6 +2238,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2320033847477286778, guid: 17802e94b3a5d3c4e9247d29afc4f5ed, type: 3}
+      propertyPath: playerAnimationClip
+      value: 
+      objectReference: {fileID: 4061839508520268033, guid: acfd4c882371edf40bf0ff426ea2ebd0, type: 3}
     - target: {fileID: 8853332323058289479, guid: 17802e94b3a5d3c4e9247d29afc4f5ed, type: 3}
       propertyPath: m_Name
       value: Interactable

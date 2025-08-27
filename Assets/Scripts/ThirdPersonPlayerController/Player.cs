@@ -13,7 +13,6 @@ namespace ThirdPersonPlayerController {
         private CapsuleCollider _capsuleCollider;
         private SphereCaster _groundCheck;
         private InputAction _jumpInput;
-        private Animator _animator;
         private InputAction _changeInput;
         private InputAction _interactInput;
         private Interactable _interactable;
@@ -27,6 +26,7 @@ namespace ThirdPersonPlayerController {
 
         [SerializeField] private List<Character> characters = new();
 
+        public Animator Animator { get; private set; }
         public event Action<Interactable> OnInteractableChanged;
         
         private void Awake() {
@@ -35,8 +35,7 @@ namespace ThirdPersonPlayerController {
             _rigidbody.useGravity = false;
 
             _capsuleCollider = GetComponent<CapsuleCollider>();
-
-            _animator = GetComponentInChildren<Animator>();
+            Animator = GetComponentInChildren<Animator>();
 
             _groundCheck = new SphereCaster(transform.position, Vector3.down, _capsuleCollider.radius - 0.01f, _capsuleCollider.height / 2 - _capsuleCollider.radius + 0.02f, ~LayerMask.GetMask("Ignore Raycast", "Player", "RoomTrigger"));
             
@@ -53,16 +52,16 @@ namespace ThirdPersonPlayerController {
         }
 
         private void SetupStateMachine() {
-            Idle idle = new Idle(_animator);
+            Idle idle = new Idle(Animator);
             _stateMachine.AddState(idle);
 
-            Walking walking = new Walking(this, _rigidbody, _moveInput, movementSpeed, _groundCheck, _animator);
+            Walking walking = new Walking(this, _rigidbody, _moveInput, movementSpeed, _groundCheck, Animator);
             _stateMachine.AddState(walking);
             
-            Falling falling = new Falling(this, _rigidbody, fallingSpeed, _moveInput, movementSpeed, _animator);
+            Falling falling = new Falling(this, _rigidbody, fallingSpeed, _moveInput, movementSpeed, Animator);
             _stateMachine.AddState(falling);
             
-            Jumping jumping = new Jumping(this, transform, jumpForce, _animator);
+            Jumping jumping = new Jumping(this, transform, jumpForce, Animator);
             _stateMachine.AddState(jumping);
 
             Attacking attacking = new Attacking();
@@ -74,7 +73,7 @@ namespace ThirdPersonPlayerController {
             ChangeCharacter changeCharacter = new ChangeCharacter(this, characters.Count);
             _stateMachine.AddState(changeCharacter);
 
-            Interaction interaction = new Interaction(this, _animator);
+            Interaction interaction = new Interaction(this, Animator);
             _stateMachine.AddState(interaction);
             
             _stateMachine.TransitionFromStateToState(idle, walking, () => _moveInput.ReadValue<Vector2>() != Vector2.zero);
