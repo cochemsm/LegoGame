@@ -23,6 +23,7 @@ namespace ThirdPersonPlayerController {
         [SerializeField] private string CurrentState;
         [SerializeField] private bool Grounded;
         public Vector3 Velocity;
+        public Minifigure minifigure;
 
         [SerializeField] private List<Character> characters = new();
 
@@ -138,6 +139,9 @@ namespace ThirdPersonPlayerController {
             int previous = index - 1;
             if (previous == -1) previous = characters.Count - 1;
             characters[previous].HeadGear.SetActive(false);
+            index += 1;
+            if (index > characters.Count) index = 1;
+            minifigure = (Minifigure) index;
         }
     }
 }
@@ -146,4 +150,11 @@ namespace ThirdPersonPlayerController {
 public struct Character {
     public List<Material> Material;
     public GameObject HeadGear;
+}
+
+public enum Minifigure {
+    All,
+    Guard,
+    Janitor,
+    Curator
 }
