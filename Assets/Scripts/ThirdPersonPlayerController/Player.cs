@@ -14,7 +14,9 @@ namespace ThirdPersonPlayerController {
         private SphereCaster _groundCheck;
         private InputAction _jumpInput;
         private Animator _animator;
+        private InputAction _changeInput;
         private InputAction _interactInput;
+        private Interactable _interactable;
 
         [SerializeField] private float movementSpeed = 1;
         [SerializeField] private float fallingSpeed = 1;
@@ -24,6 +26,8 @@ namespace ThirdPersonPlayerController {
         public Vector3 Velocity;
 
         [SerializeField] private List<Character> characters = new();
+
+        public event Action<Interactable> OnInteractableChanged;
         
         private void Awake() {
             _rigidbody = GetComponent<Rigidbody>();
@@ -38,6 +42,7 @@ namespace ThirdPersonPlayerController {
             
             _moveInput = InputSystem.actions.FindAction("Move");
             _jumpInput = InputSystem.actions.FindAction("Jump");
+            _changeInput = InputSystem.actions.FindAction("Change");
             _interactInput = InputSystem.actions.FindAction("Interact");
             
             InputSystem.actions.Enable();
@@ -68,14 +73,19 @@ namespace ThirdPersonPlayerController {
 
             ChangeCharacter changeCharacter = new ChangeCharacter(this, characters.Count);
             _stateMachine.AddState(changeCharacter);
+
+            Interaction interaction = new Interaction(this, _animator);
+            _stateMachine.AddState(interaction);
             
             _stateMachine.TransitionFromStateToState(idle, walking, () => _moveInput.ReadValue<Vector2>() != Vector2.zero);
             _stateMachine.TransitionFromStateToState(idle, jumping, () => _jumpInput.IsPressed());
-            _stateMachine.TransitionFromStateToState(idle, changeCharacter, () => _interactInput.WasPressedThisFrame());
+            _stateMachine.TransitionFromStateToState(idle, changeCharacter, () => _changeInput.WasPressedThisFrame());
+            _stateMachine.TransitionFromStateToState(idle, interaction, () => _interactable != null && _interactInput.WasPressedThisFrame());
             
             _stateMachine.TransitionFromStateToState(walking, idle, () => _moveInput.ReadValue<Vector2>() == Vector2.zero);
             _stateMachine.TransitionFromStateToState(walking, jumping, () => _jumpInput.IsPressed());
-            _stateMachine.TransitionFromStateToState(walking, changeCharacter, () => _interactInput.WasPressedThisFrame());
+            _stateMachine.TransitionFromStateToState(walking, changeCharacter, () => _changeInput.WasPressedThisFrame());
+            _stateMachine.TransitionFromStateToState(walking, interaction, () => _interactable != null && _interactInput.WasPressedThisFrame());
             
             _stateMachine.TransitionFromStateToState(jumping, idle, () => jumping.JumpFinished);
             
@@ -83,6 +93,8 @@ namespace ThirdPersonPlayerController {
             _stateMachine.TransitionFromStateToState(falling, idle, () => _groundCheck.HasHitSomething());
 
             _stateMachine.TransitionFromStateToState(changeCharacter, idle, () => true);
+            
+            _stateMachine.TransitionFromStateToState(interaction, idle, () => !interaction.Interacting);
             
             _stateMachine.SetState(idle);
         }
@@ -101,6 +113,19 @@ namespace ThirdPersonPlayerController {
             _rigidbody.linearVelocity = Velocity * Time.deltaTime;
         }
 
+        private void OnTriggerEnter(Collider other) {
+            if (other.TryGetComponent(out Interactable interactable)) {
+                _interactable = interactable;
+                OnInteractableChanged?.Invoke(interactable);
+            }
+        }
+
+        private void OnTriggerExit(Collider other) {
+            if (other.TryGetComponent(out Interactable interactable)) {
+                _interactable = null;
+            }
+        }
+
         private void OnDrawGizmos() {
             _groundCheck?.GizmosDebug();
         }
@@ -110,6 +135,10 @@ namespace ThirdPersonPlayerController {
             for (int i = 0; i < parts.Length; i++) {
                 parts[i].material = characters[index].Material[i];
             }
+            characters[index].HeadGear.SetActive(true);
+            int previous = index - 1;
+            if (previous == -1) previous = characters.Count - 1;
+            characters[previous].HeadGear.SetActive(false);
         }
     }
 }
