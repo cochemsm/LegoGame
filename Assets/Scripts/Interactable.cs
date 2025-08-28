@@ -11,6 +11,8 @@ public class Interactable : MonoBehaviour {
     private Action _callback;
     private PlayableGraph graph;
     private AnimationMixerPlayable mixer;
+    private Transform _camera;
+    [SerializeField] private Transform _lookAtTarget;
 
     [SerializeField] private Minifigure character;
     [SerializeField] private AnimationClip SuccessClip;
@@ -28,6 +30,8 @@ public class Interactable : MonoBehaviour {
         }
         
         graph = PlayableGraph.Create();
+
+        RoomManager.OnCameraChange += c => _camera = c.transform;
     }
 
     private void Start() {
@@ -63,6 +67,8 @@ public class Interactable : MonoBehaviour {
     }
 
     private IEnumerator InteractionProses() {
+        Vector3 target = DetermineSuccess() ? _lookAtTarget.position : _camera.position;
+        GameManager.Player.transform.LookAt(new Vector3(target.x, GameManager.Player.transform.position.y, target.z));
         _animation.Play();
         graph.Play();
         yield return new WaitForSeconds(DetermineSuccess() ? SuccessClip.length : FailureClip.length);
