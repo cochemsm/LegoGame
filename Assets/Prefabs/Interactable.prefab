@@ -128,7 +128,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1863128039308590273}
   - component: {fileID: 931709949516705420}
-  - component: {fileID: 4381194184127304865}
   - component: {fileID: 2320033847477286778}
   m_Layer: 2
   m_Name: Interactable
@@ -175,22 +174,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!111 &4381194184127304865
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8853332323058289479}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 0}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!114 &2320033847477286778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,5 +188,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lookAtTarget: {fileID: 4439272121766552673}
   character: 0
-  SuccessClip: {fileID: 0}
-  FailureClip: {fileID: 0}
+  SuccessClip: {fileID: -203655887218126122, guid: b20fc274d985155438462a95212e8978, type: 3}
+  FailureClip: {fileID: -203655887218126122, guid: ed61353aefa0c1d419aa664bf648886a, type: 3}
+  animator: {fileID: 0}

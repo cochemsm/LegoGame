@@ -3,11 +3,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
+using UnityEngine.Serialization;
 
-[RequireComponent(typeof(BoxCollider), typeof(Animation))]
+[RequireComponent(typeof(BoxCollider))]
 public class Interactable : MonoBehaviour {
     private SpriteRenderer _spriteRenderer;
-    private Animation _animation;
     private Action _callback;
     private PlayableGraph graph;
     private AnimationMixerPlayable mixer;
@@ -17,10 +17,13 @@ public class Interactable : MonoBehaviour {
     [SerializeField] private Minifigure character;
     [SerializeField] private AnimationClip SuccessClip;
     [SerializeField] private AnimationClip FailureClip;
+    [SerializeField] private Animator animator;
+
+    private AnimationClipPlayable clipSuccess;
+    private AnimationClipPlayable clipFailure;
     
     private void Awake() {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        _animation = GetComponent<Animation>();
         
         switch (character) {
             case Minifigure.All: _spriteRenderer.color = Color.white; break;
@@ -40,9 +43,12 @@ public class Interactable : MonoBehaviour {
 
         mixer = AnimationMixerPlayable.Create(graph, 2);
         graph.GetOutput(0).SetSourcePlayable(mixer);
+        
+        mixer.SetTraversalMode(PlayableTraversalMode.Mix);
+        mixer.SetPropagateSetTime(true);
 
-        var clipSuccess = AnimationClipPlayable.Create(graph, SuccessClip);
-        var clipFailure = AnimationClipPlayable.Create(graph, FailureClip);
+        clipSuccess = AnimationClipPlayable.Create(graph, SuccessClip);
+        clipFailure = AnimationClipPlayable.Create(graph, FailureClip);
 
         graph.Connect(clipSuccess, 0, mixer, 0);
         graph.Connect(clipFailure, 0, mixer, 1);
@@ -57,6 +63,8 @@ public class Interactable : MonoBehaviour {
 
     public void Interact(Action callback) {
         bool temp = DetermineSuccess();
+        clipSuccess.SetTime(0);
+        clipFailure.SetTime(0);
         mixer.SetInputWeight(0, temp ? 1f : 0f);
         mixer.SetInputWeight(1, temp ? 0f : 1f);
         
@@ -69,11 +77,11 @@ public class Interactable : MonoBehaviour {
     private IEnumerator InteractionProses() {
         Vector3 target = DetermineSuccess() ? _lookAtTarget.position : _camera.position;
         GameManager.Player.transform.LookAt(new Vector3(target.x, GameManager.Player.transform.position.y, target.z));
-        _animation.Play();
         graph.Play();
         yield return new WaitForSeconds(DetermineSuccess() ? SuccessClip.length : FailureClip.length);
         graph.Stop();
         _callback.Invoke();
+        if (DetermineSuccess()) animator.Play("InteractionAnimation");
     }
 
     private bool DetermineSuccess() {
