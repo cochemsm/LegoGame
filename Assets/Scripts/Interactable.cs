@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
@@ -18,6 +19,10 @@ public class Interactable : MonoBehaviour {
     [SerializeField] private AnimationClip SuccessClip;
     [SerializeField] private AnimationClip FailureClip;
     [SerializeField] private Animator animator;
+    [SerializeField] private AnimationClip TransitionClip;
+    [SerializeField] private Animator transitionAnimator;
+    [SerializeField] private bool InfiniteUse;
+    [SerializeField] private List<Material> characterMaterials = new();
 
     private AnimationClipPlayable clipSuccess;
     private AnimationClipPlayable clipFailure;
@@ -32,13 +37,8 @@ public class Interactable : MonoBehaviour {
 
     private void OnValidate() {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        
-        switch (character) {
-            case Minifigure.All: _spriteRenderer.color = Color.white; break;
-            case Minifigure.Guard: _spriteRenderer.color = new Color(1/255f, 53/255f, 100/255f, 1); break;
-            case Minifigure.Janitor: _spriteRenderer.color = new Color(58/255f, 84/255f, 108/255f, 1); break;
-            case Minifigure.Curator: _spriteRenderer.color = new Color(137/255f, 76/255f, 36/255f, 1); break;
-        }
+
+        _spriteRenderer.color = characterMaterials[(int)character].color;
     }
 
     private void Start() {
@@ -66,26 +66,28 @@ public class Interactable : MonoBehaviour {
     }
 
     public void Interact(Action callback) {
-        bool temp = DetermineSuccess();
+        bool success = DetermineSuccess();
         clipSuccess.SetTime(0);
         clipFailure.SetTime(0);
-        mixer.SetInputWeight(0, temp ? 1f : 0f);
-        mixer.SetInputWeight(1, temp ? 0f : 1f);
+        mixer.SetInputWeight(0, success ? 1f : 0f);
+        mixer.SetInputWeight(1, success ? 0f : 1f);
         
-        print("Success: " + temp);
+        print("Success: " + success);
         
         _callback = callback;
-        StartCoroutine(InteractionProses());
+        StartCoroutine(InteractionProses(success));
     }
 
-    private IEnumerator InteractionProses() {
-        Vector3 target = DetermineSuccess() ? _lookAtTarget.position : _camera.position;
+    private IEnumerator InteractionProses(bool success) {
+        Vector3 target = success ? _lookAtTarget.position : _camera.position;
         GameManager.Player.transform.LookAt(new Vector3(target.x, GameManager.Player.transform.position.y, target.z));
         graph.Play();
-        yield return new WaitForSeconds(DetermineSuccess() ? SuccessClip.length : FailureClip.length);
+        if (success && transitionAnimator != null) transitionAnimator.Play("TransitionAnimation");
+        yield return new WaitForSeconds(success ? SuccessClip.length : FailureClip.length);
         graph.Stop();
         _callback.Invoke();
-        if (DetermineSuccess()) animator.Play("InteractionAnimation");
+        if (success && animator != null) animator.Play("InteractionAnimation");
+        if (success && !InfiniteUse) Destroy(gameObject);
     }
 
     private bool DetermineSuccess() {

@@ -89,8 +89,8 @@ namespace ThirdPersonPlayerController {
             
             _stateMachine.TransitionFromStateToState(jumping, idle, () => jumping.JumpFinished);
             
-            _stateMachine.TransitionFromAnyToState(falling, () => !_groundCheck.HasHitSomething());
-            _stateMachine.TransitionFromStateToState(falling, idle, () => _groundCheck.HasHitSomething());
+            _stateMachine.TransitionFromAnyToState(falling, () => !Grounded);
+            _stateMachine.TransitionFromStateToState(falling, idle, () => Grounded);
 
             _stateMachine.TransitionFromStateToState(changeCharacter, idle, () => true);
             

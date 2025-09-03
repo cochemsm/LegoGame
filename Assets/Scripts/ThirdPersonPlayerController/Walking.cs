@@ -41,7 +41,7 @@ namespace ThirdPersonPlayerController {
             Vector3 inputDirection = input.x * right + input.y * forward;
             
             // Slopes
-            inputDirection = Vector3.ProjectOnPlane(inputDirection, _groundCheck.GetHitNormal());
+            if (_groundCheck.GetHitNormal().y > 0.45f) inputDirection = Vector3.ProjectOnPlane(inputDirection, _groundCheck.GetHitNormal());
             
             _player.Velocity = inputDirection;
             
