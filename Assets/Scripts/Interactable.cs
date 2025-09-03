@@ -25,16 +25,20 @@ public class Interactable : MonoBehaviour {
     private void Awake() {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         
-        switch (character) {
-            case Minifigure.All: _spriteRenderer.color = Color.white; break;
-            case Minifigure.Guard: _spriteRenderer.color = new Color(1/255f, 53/255f, 100/255f, 1); break;
-            case Minifigure.Janitor: _spriteRenderer.color = new Color(119/255f, 143/255f, 166/255f, 1); break;
-            case Minifigure.Curator: _spriteRenderer.color = Color.white; break;
-        }
-        
         graph = PlayableGraph.Create();
 
         RoomManager.OnCameraChange += c => _camera = c.transform;
+    }
+
+    private void OnValidate() {
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        
+        switch (character) {
+            case Minifigure.All: _spriteRenderer.color = Color.white; break;
+            case Minifigure.Guard: _spriteRenderer.color = new Color(1/255f, 53/255f, 100/255f, 1); break;
+            case Minifigure.Janitor: _spriteRenderer.color = new Color(58/255f, 84/255f, 108/255f, 1); break;
+            case Minifigure.Curator: _spriteRenderer.color = new Color(137/255f, 76/255f, 36/255f, 1); break;
+        }
     }
 
     private void Start() {
