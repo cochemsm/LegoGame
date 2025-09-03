@@ -195,6 +195,11 @@ MonoBehaviour:
   TransitionClip: {fileID: 0}
   transitionAnimator: {fileID: 0}
   InfiniteUse: 0
+  characterMaterials:
+  - {fileID: 2100000, guid: 2d91b42e929097247aa16a273002e601, type: 2}
+  - {fileID: 2100000, guid: 72e817be5fa65894696492a503ef6c1e, type: 2}
+  - {fileID: 2100000, guid: 245d724dd9e4db640b77610a0716b6ac, type: 2}
+  - {fileID: 2100000, guid: 6591a5a456fa77844886e600549e078a, type: 2}
 --- !u!54 &8974307126773298351
 Rigidbody:
   m_ObjectHideFlags: 0

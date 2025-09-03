@@ -1,24 +1,16 @@
-Proof of Concept -> Character Import
-Proof of Concept -> Assets Pipeline
+- [x] Proof of Concept -> Character Import
+- [x] Proof of Concept -> Assets Pipeline
 
 #### Prio #1
-kleines Testlevel mit rumlaufen
-- character movement
-- camera
-- enviroment test
-- character wechsel
+- [x] kleines Testlevel mit rumlaufen
+- [x] character movement
+- [x] camera
+- [x] enviroment test
+- [x] character wechsel
 
 #### Prio #2
-- character individuellen fähigkeiten
-- tutorial level
+- [ ] character individuellen fähigkeiten
+- [ ] tutorial level
 
 #### Prio #3
 - erstes eintieg puzzle
-
-
-Dinge für heute:
-- jump fixen -> es funktioniert
-- treppen gehen können -> brauche ich das überhaupt
-- charakter wechseln
-- 3 charaktere bauen
-- sounds für spieler einfügen
