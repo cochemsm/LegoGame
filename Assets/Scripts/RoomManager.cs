@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
 
 public class RoomManager : MonoBehaviour {
-    [SerializeField] private List<Room> rooms;
-
+    private List<Room> rooms = new();
     private Room currentRoom;
+
+    [SerializeField] private Room startRoom;
 
     public static event Action<CinemachineCamera> OnCameraChange;
     
@@ -17,13 +19,16 @@ public class RoomManager : MonoBehaviour {
     
     private void Awake() {
         instance = this;
+
+        rooms = FindObjectsByType<Room>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+        
         foreach (var room in rooms) {
             room.OnEnterRoom += OnRoomEnter;
         }
     }
 
     private void Start() {
-        SwitchToRoom(rooms[0]);
+        SwitchToRoom(startRoom);
     }
 
     private void OnRoomEnter(Room room) {
