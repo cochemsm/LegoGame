@@ -1,0 +1,7 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:Template name="MainMenu" src="project://database/Assets/UI/Panels/MainMenu.uxml?fileID=9197481963319205126&amp;guid=fcd0b141cf474204dad7fe4d684935d5&amp;type=3#MainMenu" />
+    <engine:Template name="LevelSelector" src="project://database/Assets/UI/Panels/LevelSelector.uxml?fileID=9197481963319205126&amp;guid=56a03a439f0f9094d909ae3ce6962ec0&amp;type=3#LevelSelector" />
+    <Style src="project://database/Assets/UI/Styles/CompleteUI.uss?fileID=7433441132597879392&amp;guid=c8b1ae0f040852b41b873d0081652647&amp;type=3#CompleteUI" />
+    <engine:Instance template="MainMenu" class="panel" />
+    <engine:Instance template="LevelSelector" class="panel" style="display: none;" />
+</engine:UXML>
