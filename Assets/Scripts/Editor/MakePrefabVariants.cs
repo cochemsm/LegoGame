@@ -97,7 +97,7 @@ public class MakePrefabVariants : EditorWindow {
             
             
             GameObject objSource = (GameObject) PrefabUtility.InstantiatePrefab(defaultPrefab);
-            GameObject obj = PrefabUtility.SaveAsPrefabAsset(objSource, newPath);
+            PrefabUtility.SaveAsPrefabAsset(objSource, newPath);
             
             GameObject prefabContents = PrefabUtility.LoadPrefabContents(newPath);
             var renderers = prefabContents.GetComponentsInChildren<Renderer>();
@@ -107,6 +107,7 @@ public class MakePrefabVariants : EditorWindow {
             
             PrefabUtility.SaveAsPrefabAsset(prefabContents, newPath);
             PrefabUtility.UnloadPrefabContents(prefabContents);
+            DestroyImmediate(objSource);
         }
         
         Debug.Log("Finished Creating Prefab Variants");
