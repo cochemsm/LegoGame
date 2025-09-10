@@ -1,4 +1,4 @@
-Button {
+.unity-button {
     font-size: 54px;
     background-color: rgb(0, 169, 255);
     border-left-color: rgb(61, 95, 255);
@@ -23,4 +23,22 @@ Button {
     padding-right: 30px;
     padding-bottom: 20px;
     padding-left: 30px;
+    -unity-text-align: middle-center;
+}
+
+.unity-button:hover {
+    border-left-color: rgb(0, 169, 255);
+    border-right-color: rgb(0, 169, 255);
+    border-top-color: rgb(0, 169, 255);
+    border-bottom-color: rgb(0, 169, 255);
+    color: rgb(61, 95, 255);
+    background-color: rgb(255, 255, 255);
+}
+
+.unity-text-element {
+    -unity-font-definition: url("project://database/Assets/UI/Themes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=d8e635f45b4b4cf4d88e99ef83d80cc4&type=3#NotInter-Regular");
+}
+
+.unity-ui-document__root {
+    flex-grow: 1;
 }

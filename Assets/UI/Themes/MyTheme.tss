@@ -1,4 +1,6 @@
-@import url("UnityDefaultRuntimeTheme.tss");
+
+@import url("/Assets/UI/Styles/MainMenu.uss");
+
 
 
 VisualElement {}
