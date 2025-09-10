@@ -1,10 +1,11 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/MainMenu.uss?fileID=7433441132597879392&amp;guid=f037d40920088024c8918b1fecddac7f&amp;type=3#MainMenu" />
     <engine:VisualElement style="flex-grow: 1; justify-content: center; align-items: center;">
         <engine:VisualElement>
             <engine:Button text="Play" name="PlayButton" />
-            <engine:Button text="Settings" name="SettingsButton" />
+            <engine:Button text="Settings" name="SettingsButton" style="display: none;" />
             <engine:Button text="Quit" name="QuitButton" />
         </engine:VisualElement>
-        <engine:Label text="Game Title" style="position: absolute; top: 20%;" />
+        <engine:Label text="Game Title" style="position: absolute; top: 20%; font-size: 40px;" />
     </engine:VisualElement>
 </engine:UXML>

@@ -24,6 +24,8 @@ public class Interactable : MonoBehaviour {
     [SerializeField] private bool InfiniteUse;
     [SerializeField] private List<Material> characterMaterials = new();
 
+    public bool Finished { get; private set; }
+    
     private AnimationClipPlayable clipSuccess;
     private AnimationClipPlayable clipFailure;
     
@@ -87,7 +89,10 @@ public class Interactable : MonoBehaviour {
         graph.Stop();
         _callback.Invoke();
         if (success && animator != null) animator.Play("InteractionAnimation");
-        if (success && !InfiniteUse) Destroy(gameObject);
+        if (success && !InfiniteUse) {
+            Destroy(gameObject);
+            Finished = true;
+        }
     }
 
     private bool DetermineSuccess() {
