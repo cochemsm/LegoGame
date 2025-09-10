@@ -6,6 +6,6 @@
             <engine:Button text="Settings" name="SettingsButton" style="display: none;" />
             <engine:Button text="Quit" name="QuitButton" />
         </engine:VisualElement>
-        <engine:Label text="Game Title" style="position: absolute; top: 20%; font-size: 40px;" />
+        <engine:Label text="Game Title" style="position: absolute; top: 20%; font-size: 72px; -unity-font-style: bold; color: rgb(255, 255, 255);" />
     </engine:VisualElement>
 </engine:UXML>

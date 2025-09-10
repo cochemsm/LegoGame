@@ -1,13 +1,12 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class OpenDoorOnLevers : MonoBehaviour {
     [SerializeField] private List<Interactable> interactables = new();
     [SerializeField] private Transform doorLeft;
     [SerializeField] private Transform doorRight;
-    [SerializeField] private float openSpeed;
+    [SerializeField] private float openSpeed = 1f;
     [SerializeField] private float openAngle;
     
     private bool _isOpen;
@@ -16,9 +15,20 @@ public class OpenDoorOnLevers : MonoBehaviour {
         if (_isOpen) return;
         
         if (interactables.TrueForAll(i => i.Finished)) {
-            doorLeft.Rotate(Vector3.up, -openAngle);
-            doorRight.Rotate(Vector3.up, openAngle);
-            _isOpen = true;
+            StartCoroutine(OpenDoor());
         }
     }
+
+    private IEnumerator OpenDoor() {
+        yield return new WaitForSeconds(1f);
+        _isOpen = true;
+        float currentAngle = 0;
+        while (currentAngle < openAngle) {
+            currentAngle += Time.deltaTime * openSpeed;
+            doorLeft.localRotation = Quaternion.Euler(0, -currentAngle, 0);
+            doorRight.localRotation = Quaternion.Euler(0, currentAngle, 0);
+            yield return null;
+        }
+    }
+        
 }
