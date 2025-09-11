@@ -7,5 +7,6 @@
         </engine:VisualElement>
         <engine:Label text="Game Paused" style="top: 20%; position: absolute; font-size: 72px; -unity-font-style: bold; color: rgb(255, 255, 255);" />
         <engine:Label text="[E] Interact&#10;[Tab] Switch Character" style="position: absolute; left: 50px; bottom: 50px; font-size: 40px; color: rgb(255, 255, 255); -unity-font-style: bold;" />
+        <engine:Label text="Jump [Space]&#10;Move [W, A, S, D]" style="position: absolute; font-size: 40px; color: rgb(255, 255, 255); -unity-font-style: bold; right: 50px; bottom: 50px; -unity-text-align: upper-right;" />
     </engine:VisualElement>
 </engine:UXML>

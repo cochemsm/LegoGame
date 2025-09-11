@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 public class EscapeMenuUI : MonoBehaviour {
     private bool _isPaused;
@@ -10,11 +11,12 @@ public class EscapeMenuUI : MonoBehaviour {
     private void Start() {
         InputSystem.actions.FindAction("Escape").Enable();
         _pauseMenu = GetComponent<UIDocument>().rootVisualElement;
-        _pauseMenu.style.display = DisplayStyle.None;
+        Unpause();
 
         _pauseMenu.Q<Button>("ResumeButton").clicked += Unpause;
         _pauseMenu.Q<Button>("ExitButton").clicked += () => {
             Unpause();
+            Cursor.visible = true;
             SceneManager.LoadScene(0);
         };
     }
@@ -36,11 +38,13 @@ public class EscapeMenuUI : MonoBehaviour {
         _isPaused = true;
         Time.timeScale = 0f;
         _pauseMenu.style.display = DisplayStyle.Flex;
+        Cursor.visible = true;
     }
 
     private void Unpause() {
         _isPaused = false;
         Time.timeScale = 1f;
         _pauseMenu.style.display = DisplayStyle.None;
+        Cursor.visible = false;
     }
 }

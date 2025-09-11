@@ -37,6 +37,8 @@
 
 .unity-text-element {
     -unity-font-definition: url("project://database/Assets/UI/Themes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=d8e635f45b4b4cf4d88e99ef83d80cc4&type=3#NotInter-Regular");
+    color: rgb(255, 255, 255);
+    -unity-font-style: bold;
 }
 
 .unity-ui-document__root {
