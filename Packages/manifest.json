@@ -10,6 +10,7 @@
     "com.unity.inputsystem": "1.13.1",
     "com.unity.multiplayer.center": "1.0.0",
     "com.unity.playablegraph-visualizer": "https://github.com/Unity-Technologies/graph-visualizer.git",
+    "com.unity.recorder": "5.1.2",
     "com.unity.render-pipelines.core": "17.0.4",
     "com.unity.render-pipelines.universal": "17.0.4",
     "com.unity.render-pipelines.universal-config": "17.0.3",
